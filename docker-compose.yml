@@ -1,0 +1,26 @@
+version: '3.0'
+
+services:
+  web:
+    build: .
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    links:
+      - 'db:db'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+
+  db:
+    image: postgres:12.3-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
